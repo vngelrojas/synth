@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose'
 
-const app = require('express')();
+const app = express();
 dotenv.config();
 
 
@@ -10,6 +10,7 @@ dotenv.config();
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL,
 {
+    // To use  ensure compatibility with the latest version of mongoose and MongoDB.
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(()=>
