@@ -3,10 +3,13 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const morgan = require('morgan')
 require('./auth');
 
 const app = express();
 
+// To log to console, delete later
+app.use(morgan('dev'))
 
 dotenv.config();
 app.use(session({
