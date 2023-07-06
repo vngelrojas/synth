@@ -46,7 +46,7 @@ app.get('/auth/failure',(req,res) =>{
     res.send('Something went wrong..')
 })
 app.get('/protected',isLoggedIn,(req,res) =>{
-    res.send(`Helo ${req.user.displayName}`);
+    res.redirect('http://localhost:5173/');
 })
 app.get('/logout',(req,res) =>{
     req.session.destroy();
@@ -54,6 +54,7 @@ app.get('/logout',(req,res) =>{
         res.redirect('/');
     });
 })
+           
 
 // Mongoose setup
 const PORT = process.env.PORT || 6001;

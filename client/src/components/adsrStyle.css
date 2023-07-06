@@ -1,0 +1,15 @@
+.ADSR
+{   
+    /* background-color:rgb(83, 83, 84)    */
+}
+.ADSR input[type=range] {
+   
+  
+        -webkit-appearance: slider-vertical;
+        height: 150px;
+        padding: 0 20px;
+        width: 20px;
+        writing-mode: bt-lr;
+    
+     
+  }
