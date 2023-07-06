@@ -62,8 +62,9 @@ app.get('/protected',isLoggedIn,(req,res) =>
 
 app.get('/check-auth',(req,res) =>
 {
+    console.log(req.user);
     if(req.user)
-        res.json({isLoggedIn: true})
+        res.json({isLoggedIn: true,googleId: req.user.googleId})
     else
         res.json({isLoggedIn: false})
 });
