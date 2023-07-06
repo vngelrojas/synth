@@ -44,11 +44,13 @@ passport.use(new GoogleStrategy
   }
 ));
 
-passport.serializeUser((user,done)=> {
+passport.serializeUser((user,done)=> 
+{
     done(null,user);
 });
 
-passport.deserializeUser((user,done)=> {
+passport.deserializeUser((user,done)=> 
+{
     done(null,user);
 });
 

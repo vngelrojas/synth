@@ -4,14 +4,21 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const morgan = require('morgan')
+const cors = require('cors')
 require('./auth');
-
+// To read from .env files
+dotenv.config();
 const app = express();
-
 // To log to console, delete later
 app.use(morgan('dev'))
+const corsOptions = 
+{
+    origin: 'http://localhost:5173',
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
-dotenv.config();
+// Stuff to do with google credintials
 app.use(session({
     secret: process.env.CLIENT_SECRET,
     resave: false,
@@ -42,18 +49,32 @@ app.get('/google/callback',
         failureRedirect: '/auth/failure',
     })
 );
-app.get('/auth/failure',(req,res) =>{
+
+app.get('/auth/failure',(req,res) =>
+{
     res.send('Something went wrong..')
-})
-app.get('/protected',isLoggedIn,(req,res) =>{
-    res.redirect('http://localhost:5173/');
-})
-app.get('/logout',(req,res) =>{
+});
+
+app.get('/protected',isLoggedIn,(req,res) =>
+{
+    res.send(`Hello`);
+});
+
+app.get('/check-auth',(req,res) =>
+{
+    if(req.user)
+        res.json({isLoggedIn: true})
+    else
+        res.json({isLoggedIn: false})
+});
+
+app.get('/logout',(req,res) =>
+{
     req.session.destroy();
     req.logout(()=>{ // from passport documentation
         res.redirect('/');
     });
-})
+});
            
 
 // Mongoose setup
