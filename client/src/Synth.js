@@ -23,9 +23,9 @@ class Synth
         
         this.reverb = new Tone.Reverb
         ({
-            decay:10,
-            preDelay: 0.5,
-            wet: 0.9,
+            decay:0.01,
+            preDelay: 0,
+            wet: 0,
         });
     }
     on()
@@ -38,10 +38,12 @@ class Synth
     }
     connectReverb()
     {
+        this.reverb.toDestination();
         this.instrument.connect(this.reverb);
     }
     disconnectReverb()
     {
+        this.reverb.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.reverb);
     }
 };

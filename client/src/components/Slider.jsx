@@ -6,6 +6,7 @@ export default function Slider(props) {
   function handleInput(e) {
     let value = e.target.value;
     synth.instrument.set({ envelope: { [name]: value } });
+    
   }
 
   return (

@@ -1,5 +1,6 @@
 import * as Tone from "tone";
-import Synth from './Synth'
+import Synth// reverb.set({preDelay:0.1});
+from './Synth'
 // Map keys to notes
 const keyMap = {
   a: "C4",

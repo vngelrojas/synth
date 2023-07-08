@@ -2,6 +2,8 @@ import Adsr from "./components/ADSR";
 import SynthOptions from "./components/SynthOptions";
 import "./App.css";
 import React, { useEffect, useState } from 'react';
+//import { Effect } from "tone/build/esm/effect/Effect";
+import Effect from "./components/Effect";
 
 
 
@@ -24,6 +26,8 @@ export default function App(props)
   //     });
   // },[]);
   const isLoggedIn = true;
+  const knobNames = ["wet", "decay", "predelay"];
+  const effectName = "reverb";
   if(isLoggedIn)
   {
     return (
@@ -32,6 +36,9 @@ export default function App(props)
         <SynthOptions className="synth-options" synth={props.synth} />
         <br></br>
         <Adsr synth={props.synth} />
+        <br></br>
+        <br></br>
+        <Effect knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={props.synth}></Effect>
       </div>
     );
   }
