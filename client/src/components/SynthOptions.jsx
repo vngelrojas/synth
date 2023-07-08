@@ -3,11 +3,11 @@ export default function SynthOptions(props) {
   const buttonList = ["sine", "triangle", "sawtooth"]; // List of oscillator types
 
   const handleVolume = (e) => {
-    synth.set({ volume: e.target.value });
+    synth.instrument.set({ volume: e.target.value });
   };
 
   const handleOsc = (e) => {
-    synth.set({ oscillator: { type: e.target.name.toString() } });
+    synth.instrument.set({ oscillator: { type: e.target.name.toString() } });
   };
 
   return (
