@@ -56,34 +56,6 @@ if (note) {
 }
 });
 
-// const reverb = new Tone.Reverb
-// (
-// {
-//   decay:10,
-//   preDelay: 0.5,
-//   wet: 0.9,
-// }
-// ).toDestination();
-
-// reverb.set({preDelay:0.1});
-
-
-// let synth = new Tone.PolySynth(Tone.Synth, {
-// oscillator: {
-//   type: "triangle",
-//   detune: 0,
-//   volume: -20,
-// },
-// envelope: {
-//   attack: 0.1,
-//   decay: .5,
-//   sustain: .5,
-//   release: .5,
-// },
-// }).connect(reverb).toDestination();
-
-// synth.disconnect(reverb);
-// synth.connect(reverb);
 
 let synth = new Synth();
 synth.on();

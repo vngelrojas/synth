@@ -26,7 +26,20 @@ class Synth
             decay:0.01,
             preDelay: 0,
             wet: 0,
+        
+            
         });
+
+        this.chorus = new Tone.Chorus
+        ({
+            wet:0,
+            frequency: 0,
+            depth: 0,
+            spread:180,
+            delayTime:1,
+            type:'sine',
+
+        })
     }
     on()
     {
@@ -45,6 +58,16 @@ class Synth
     {
         this.reverb.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.reverb);
+    }
+    connectChorus()
+    {
+        this.chorus.toDestination().start();
+        this.instrument.connect(this.chorus);
+    }
+    disconnectChorus()
+    {
+        this.chorus.disconnect(Tone.getDestination());
+        this.instrument.disconnect(this.chorus);
     }
 };
 

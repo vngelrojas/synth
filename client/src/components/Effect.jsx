@@ -4,6 +4,8 @@ import { Button } from 'primereact/button';
 import "primereact/resources/primereact.min.css";  
 import "primereact/resources/themes/lara-light-indigo/theme.css"; 
 import * as Tone from "tone";
+import "../App.css";
+
 
 
 
@@ -16,6 +18,8 @@ export default function Effect(props)
         'wet': [0,1,0.01],
         'preDelay': [0,1,0.01],
         'decay': [0.01,20,0.5],
+        'frequency':[0,5,0.1],
+        'depth':[0,5,0.1],
     };
     // Initialize the state object with default values for each knob
     const initialState = knobNames.reduce((acc, knobName) => 
@@ -60,7 +64,7 @@ export default function Effect(props)
     });
 
     return (
-    <>
+    <div className="effect">
         <Button label="ON" onClick={() => toggle(!state)} />
         {
             knobNames.map((knobName) => (
@@ -77,7 +81,7 @@ export default function Effect(props)
             />
             ))
         }
-    </>
+    </div>
     );
 }
 
@@ -90,7 +94,6 @@ Effects list
     - wet
 -Chorus
     - frequency
-    - delay-time
     - depth
     - wet
 -Tremolo

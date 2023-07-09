@@ -38,7 +38,10 @@ export default function App(props)
         <Adsr synth={props.synth} />
         <br></br>
         <br></br>
-        <Effect knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={props.synth}></Effect>
+        <div className="effect-rack">
+          <Effect  knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={props.synth}></Effect>
+          <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={props.synth}></Effect>
+        </div>
       </div>
     );
   }

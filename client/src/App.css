@@ -1,4 +1,18 @@
 .main
 {
     background-color:rgb(83, 83, 84)   
+    
+}
+.main .effect-rack
+{
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+}
+
+.main .effect-rack .effect
+{
+    display: grid;
+    
+    
 }
