@@ -20,6 +20,8 @@ export default function Effect(props)
         'decay': [0.01,20,0.5],
         'frequency':[0,5,0.1],
         'depth':[0,5,0.1],
+        'delayTime':[0,1,0.01],
+        'feedback':[0,1,0.01],
     };
     // Initialize the state object with default values for each knob
     const initialState = knobNames.reduce((acc, knobName) => 

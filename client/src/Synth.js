@@ -40,6 +40,14 @@ class Synth
             type:'sine',
 
         })
+
+        this.delay = new Tone.FeedbackDelay
+        ({
+            delayTime:0,
+            feedback:0,
+            wet:0,
+            maxDelay:1,
+        })
     }
     on()
     {
@@ -68,6 +76,16 @@ class Synth
     {
         this.chorus.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.chorus);
+    }
+    connectDelay()
+    {
+        this.delay.toDestination();
+        this.instrument.connect(this.delay);
+    }
+    disconnectDelay()
+    {
+        this.delay.disconnect(Tone.getDestination());
+        this.instrument.disconnect(this.delay);
     }
 };
 
