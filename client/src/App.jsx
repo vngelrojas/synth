@@ -5,12 +5,17 @@ import React, { useEffect, useState } from 'react';
 //import { Effect } from "tone/build/esm/effect/Effect";
 import Effect from "./components/Effect";
 import { Button } from "primereact/button";
+import TextModal from "./components/TextModal";
+import Popup from 'reactjs-popup';
+import { InputText } from 'primereact/inputtext';
+import 'reactjs-popup/dist/index.css';
 
 
 
 export default function App(props) 
 {
   const synth = props.synth;
+  const [presetName,setPresetName] = useState('');
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // useEffect(() => {
@@ -28,8 +33,13 @@ export default function App(props)
   // },[]);
   const isLoggedIn = true;
   function savePreset()
-  {
-    const settings = synth.getSynthSettings();
+  { 
+    //Assign presetName to this var because schema has "name": and not "presetName": 
+    var name = presetName;
+    //Prepending the name of preset to setting json
+    const settings = JSON.stringify({name,...JSON.parse(synth.getSynthSettings())},null,2)
+    console.log(settings);
+
     fetch('http://localhost:3001/save', 
     {
       method: 'POST',
@@ -53,6 +63,7 @@ export default function App(props)
       {
         console.error('Error sending data:', error);
       });
+      
   }
 
   if(isLoggedIn)
@@ -64,14 +75,18 @@ export default function App(props)
         <br></br>
         <Adsr synth={synth} />
         <br></br>
-        <Button label="save" onClick={() => savePreset()}></Button>
         <br></br>
         <br></br>
         <div className="effect-rack">
           <Effect knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={synth}></Effect>
           <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={synth}></Effect>
           <Effect knobNames={["wet","delayTime","feedback"]} effectName="delay" synth={synth}></Effect>
-
+        </div>
+        <div>
+            <Popup trigger={<Button label="save" ></Button>} modal>
+            <InputText maxLength={20} placeholder={"Preset Name"} onChange={(e) => setPresetName(e.target.value)}></InputText>
+            <Button onClick={() => savePreset()}>Save</Button>
+            </Popup>
         </div>
       </div>
     );
