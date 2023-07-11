@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Preset = require('./Preset')
 const findOrCreate = require('mongoose-findorcreate');
 const UserSchema = mongoose.Schema({
     googleId:
@@ -11,6 +12,7 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    presets: [Preset.schema],
     createdAt:
     {
         type: Date,
