@@ -4,10 +4,13 @@ export default function SynthOptions(props) {
 
   const handleVolume = (e) => {
     synth.instrument.set({ volume: e.target.value });
+    synth.instrumentSettings.oscillator.volume = e.target.value;
   };
 
   const handleOsc = (e) => {
     synth.instrument.set({ oscillator: { type: e.target.name.toString() } });
+    synth.instrumentSettings.oscillator.type = e.target.name.toString();
+
   };
 
   return (

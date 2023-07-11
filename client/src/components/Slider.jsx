@@ -3,10 +3,11 @@ import * as Tone from "tone";
 export default function Slider(props) {
   const { className, name, min, max, value, step, synth } = props;
 
-  function handleInput(e) {
+  function handleInput(e) 
+  {
     let value = e.target.value;
     synth.instrument.set({ envelope: { [name]: value } });
-    
+    synth.instrumentSettings.envelope[name] = value;
   }
 
   return (

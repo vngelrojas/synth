@@ -29,13 +29,14 @@ export default function App(props)
   const isLoggedIn = true;
   function savePreset()
   {
-    const jsonString = synth.getEffectData();
-
-    const fileData = new Blob([jsonString], {type: 'application/json'});
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(fileData);
-    downloadLink.download = 'preset.json';
-    downloadLink.click();  }
+    const jsonString = synth.getSynthSettings();
+    console.log(jsonString);
+    // const fileData = new Blob([jsonString], {type: 'application/json'});
+    // const downloadLink = document.createElement('a');
+    // downloadLink.href = URL.createObjectURL(fileData);
+    // downloadLink.download = 'preset.json';
+    // downloadLink.click();  
+  }
   if(isLoggedIn)
   {
     return (

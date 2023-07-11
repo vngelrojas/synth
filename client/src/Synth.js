@@ -51,6 +51,22 @@ class Synth
         // Settings for the different effects
         // The fron end directly changes the effects but also updates the values below
         // When we want to save the present we just stringify the objects below since you cant do it on Tone.Js objects
+        this.instrumentSettings = 
+        {
+            oscillator: 
+            {
+                type: "triangle",
+                detune: 0,
+                volume: -20,
+            },
+            envelope: 
+            {
+                attack: 0.1,
+                decay: .5,
+                sustain: .5,
+                release: .5,
+            },
+        }
         this.reverbSettings = 
         {
             on: false,
@@ -115,9 +131,10 @@ class Synth
         this.delay.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.delay);
     }
-    getEffectData()
+    getSynthSettings()
     {
         const effectData = {
+            synth: this.instrumentSettings,
             reverb: this.reverbSettings,
             chorus: this.chorusSettings,
             delay: this.delaySettings,
