@@ -4,12 +4,13 @@ import "./App.css";
 import React, { useEffect, useState } from 'react';
 //import { Effect } from "tone/build/esm/effect/Effect";
 import Effect from "./components/Effect";
+import { Button } from "primereact/button";
 
 
 
 export default function App(props) 
 {
-
+  const synth = props.synth;
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // useEffect(() => {
@@ -26,8 +27,15 @@ export default function App(props)
   //     });
   // },[]);
   const isLoggedIn = true;
-  const knobNames = ["wet", "decay", "predelay"];
-  const effectName = "reverb";
+  function savePreset()
+  {
+    const jsonString = synth.getEffectData();
+
+    const fileData = new Blob([jsonString], {type: 'application/json'});
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(fileData);
+    downloadLink.download = 'preset.json';
+    downloadLink.click();  }
   if(isLoggedIn)
   {
     return (
@@ -35,13 +43,15 @@ export default function App(props)
       <div className="main">
         <SynthOptions className="synth-options" synth={props.synth} />
         <br></br>
-        <Adsr synth={props.synth} />
+        <Adsr synth={synth} />
+        <br></br>
+        <Button label="save" onClick={() => savePreset()}></Button>
         <br></br>
         <br></br>
         <div className="effect-rack">
-          <Effect  knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={props.synth}></Effect>
-          <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={props.synth}></Effect>
-          <Effect knobNames={["wet","delayTime","feedback"]} effectName="delay" synth={props.synth}></Effect>
+          <Effect knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={synth}></Effect>
+          <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={synth}></Effect>
+          <Effect knobNames={["wet","delayTime","feedback"]} effectName="delay" synth={synth}></Effect>
 
         </div>
       </div>

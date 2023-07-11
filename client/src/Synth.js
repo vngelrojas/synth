@@ -48,6 +48,32 @@ class Synth
             wet:0,
             maxDelay:1,
         })
+        // Settings for the different effects
+        // The fron end directly changes the effects but also updates the values below
+        // When we want to save the present we just stringify the objects below since you cant do it on Tone.Js objects
+        this.reverbSettings = 
+        {
+            on: false,
+            wet: 0,
+            decay:0.01,
+            preDelay: 0,
+        
+        }
+        this.chorusSettings = 
+        {
+            on: false,
+            wet:0,
+            frequency: 0,
+            depth: 0,
+        }
+
+        this.delaySettings = 
+        {
+            on: false,
+            wet:0,
+            delayTime:0,
+            feedback:0,
+        }
     }
     on()
     {
@@ -61,11 +87,13 @@ class Synth
     {
         this.reverb.toDestination();
         this.instrument.connect(this.reverb);
+        this.reverbSettings.on = true;
     }
     disconnectReverb()
     {
         this.reverb.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.reverb);
+        this.reverbSettings.on = false;
     }
     connectChorus()
     {
@@ -86,6 +114,15 @@ class Synth
     {
         this.delay.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.delay);
+    }
+    getEffectData()
+    {
+        const effectData = {
+            reverb: this.reverbSettings,
+            chorus: this.chorusSettings,
+            delay: this.delaySettings,
+        }
+        return JSON.stringify(effectData,null,2);
     }
 };
 

@@ -46,7 +46,8 @@ export default function Effect(props)
         console.log(effectName + " "+ knobName + " " + newValue)
         // Change the effect and its parameter with the new value
         synth[effectName].set({[knobName]:newValue});
-    };
+        synth[effectName + "Settings"][knobName] = newValue;
+    };  
 
     const toggle = ((state) => 
     {
@@ -63,6 +64,8 @@ export default function Effect(props)
         {
             synth["disconnect"+ capitalEffectName]();
         }
+
+        
     });
 
     return (
