@@ -115,21 +115,26 @@ class Synth
     {
         this.chorus.toDestination().start();
         this.instrument.connect(this.chorus);
+        this.chorusSettings.on = true;
     }
     disconnectChorus()
     {
         this.chorus.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.chorus);
+        this.chorusSettings.on = false;
     }
     connectDelay()
     {
         this.delay.toDestination();
         this.instrument.connect(this.delay);
+        this.delaySettings.on = true;
     }
     disconnectDelay()
     {
         this.delay.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.delay);
+        this.delaySettings.on = false;
+
     }
     getSynthSettings()
     {

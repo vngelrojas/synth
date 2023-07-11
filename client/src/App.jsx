@@ -29,14 +29,32 @@ export default function App(props)
   const isLoggedIn = true;
   function savePreset()
   {
-    const jsonString = synth.getSynthSettings();
-    console.log(jsonString);
-    // const fileData = new Blob([jsonString], {type: 'application/json'});
-    // const downloadLink = document.createElement('a');
-    // downloadLink.href = URL.createObjectURL(fileData);
-    // downloadLink.download = 'preset.json';
-    // downloadLink.click();  
+    const settings = synth.getSynthSettings();
+    fetch('http://localhost:3001/save', 
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: settings
+    }).then(response => 
+      {
+        if (response.ok) 
+        {
+          // Request was successful
+          console.log('Data sent successfully');
+        } 
+        else 
+        {
+          // Request failed
+          console.error('Failed to send data');
+        }
+      }).catch(error => 
+      {
+        console.error('Error sending data:', error);
+      });
   }
+
   if(isLoggedIn)
   {
     return (

@@ -9,6 +9,8 @@ require('./auth');
 // To read from .env files
 dotenv.config();
 const app = express();
+// To read json files from req body
+app.use(express.json());
 // To log to console, delete later
 app.use(morgan('dev'))
 const corsOptions = 
@@ -75,6 +77,12 @@ app.get('/logout',(req,res) =>
     req.logout(()=>{ // from passport documentation
         res.redirect('/');
     });
+});
+
+app.post('/save', (req,res) => 
+{
+   console.log(req.body);
+   res.status(200).send("Nice");
 });
            
 
