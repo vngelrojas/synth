@@ -30,7 +30,7 @@ export default function App(props)
         console.error('Error checking authentication:', error);
       });
   },[]);
-  // const isLoggedIn = true;
+
   function savePreset()
   { 
     //Assign presetName to this var because schema has "name": and not "presetName": 
@@ -66,31 +66,37 @@ export default function App(props)
 
   }
 
-  if(isLoggedIn)
-  {
-    return (
-      
-      <div className="main">
-        <SynthOptions className="synth-options" synth={props.synth} />
-        <br></br>
-        <Adsr synth={synth} />
-        <br></br>
-        <br></br>
-        <br></br>
-        <div className="effect-rack">
-          <Effect knobNames={["wet","decay","preDelay"]} effectName="reverb" synth ={synth}></Effect>
-          <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={synth}></Effect>
-          <Effect knobNames={["wet","delayTime","feedback"]} effectName="delay" synth={synth}></Effect>
-        </div>
-        <div>
-            <Popup trigger={<Button label="save" ></Button>} modal>
-            <InputText maxLength={20} placeholder={"Preset Name"} onChange={(e) => setPresetName(e.target.value)}></InputText>
-            <Button onClick={() => savePreset()}>Save</Button>
-            </Popup>
-        </div>
+  return(
+    <div className="main">
+    {!isLoggedIn && <Button>Log In</Button>}
+    <br></br>
+    <SynthOptions className="synth-options" synth={props.synth} />
+    <br></br>
+    <Adsr synth={synth} />
+    <br></br>
+    <br></br>
+    <br></br>
+    <div className="effect-rack">
+      <Effect knobNames={["wet","decay","preDelay"]} effectName="reverb" synth={synth} />
+      <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={synth} />
+      <Effect knobNames={["wet","delayTime","feedback"]} effectName="delay" synth={synth} />
+    </div>
+    {isLoggedIn && 
+    (
+      <div>
+        <Popup trigger={<Button label="save" />} modal>
+          {(close) =>
+          (
+            <>
+              <InputText maxLength={20} placeholder="Preset Name" onChange={(e) => setPresetName(e.target.value)} />
+              <Button onClick={() => {savePreset();close();}}>Save</Button>
+            </>
+          )}
+        </Popup>
       </div>
-    );
-  }
-  else
-    return <h1>Not logged In</h1>;
+    )}
+    </div>
+
+  );
 }
+

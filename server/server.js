@@ -86,17 +86,19 @@ app.post('/save', isLoggedIn,async (req,res) =>
 {
     if(req.user && req.body)
     {
+        console.log(req.body.name);
         try
         {
             const preset = parsePreset(req);
             const user = await User.findOne({googleId:req.user.googleId}).exec();
             user.presets.push(preset);
+            await preset.save();
             await user.save();
             res.status(200).send("Nice");
         }
-        catch(err)
+        catch(error)
         {
-            res.status(500).send(err);
+            res.status(500).send(error);
         }
     }
     else   
