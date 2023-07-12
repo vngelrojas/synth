@@ -2,7 +2,6 @@ import Adsr from "./components/ADSR";
 import SynthOptions from "./components/SynthOptions";
 import "./App.css";
 import React, { useEffect, useState } from 'react';
-//import { Effect } from "tone/build/esm/effect/Effect";
 import Effect from "./components/Effect";
 import { Button } from "primereact/button";
 import TextModal from "./components/TextModal";
@@ -16,22 +15,22 @@ export default function App(props)
 {
   const synth = props.synth;
   const [presetName,setPresetName] = useState('');
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // useEffect(() => {
+  useEffect(() => {
     
-  //   // Make a GET request to the server to check if the user is logged in
-  //   fetch('http://localhost:3001/check-auth', {credentials: 'include'})
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       setIsLoggedIn(data.isLoggedIn);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error checking authentication:', error);
-  //     });
-  // },[]);
-  const isLoggedIn = true;
+    // Make a GET request to the server to check if the user is logged in
+    fetch('http://localhost:3001/check-auth', {credentials: 'include'})
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setIsLoggedIn(data.isLoggedIn);
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+      });
+  },[]);
+  // const isLoggedIn = true;
   function savePreset()
   { 
     //Assign presetName to this var because schema has "name": and not "presetName": 
@@ -46,6 +45,7 @@ export default function App(props)
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: "include",
       body: settings
     }).then(response => 
       {
@@ -63,7 +63,7 @@ export default function App(props)
       {
         console.error('Error sending data:', error);
       });
-      
+
   }
 
   if(isLoggedIn)

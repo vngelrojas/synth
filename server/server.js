@@ -6,6 +6,9 @@ const passport = require('passport');
 const morgan = require('morgan')
 const cors = require('cors')
 require('./auth');
+const Preset = require('./models/Preset');
+const User = require('./models/User');
+
 // To read from .env files
 dotenv.config();
 const app = express();
@@ -19,6 +22,7 @@ const corsOptions =
     credentials: true,
 };
 app.use(cors(corsOptions));
+app.options('/save', cors(corsOptions)); // Add this line maybe delete?
 
 // Stuff to do with google credintials
 app.use(session({
@@ -32,7 +36,6 @@ app.use(passport.session());
 
 
 // middleware
-app.use(express.json()); // allows our server to accept json as body
 function isLoggedIn(req,res,next)
 {
     req.user ? next() : res.sendStatus(401);
@@ -79,12 +82,28 @@ app.get('/logout',(req,res) =>
     });
 });
 
-app.post('/save', (req,res) => 
+app.post('/save', isLoggedIn,async (req,res) => 
 {
-   console.log(req.body);
-   res.status(200).send("Nice");
+    if(req.user && req.body)
+    {
+        try
+        {
+            const preset = parsePreset(req);
+            const user = await User.findOne({googleId:req.user.googleId}).exec();
+            user.presets.push(preset);
+            await user.save();
+            res.status(200).send("Nice");
+        }
+        catch(err)
+        {
+            res.status(500).send(err);
+        }
+    }
+    else   
+        res.status(500).send("Couldnt insert");
 });
            
+
 
 // Mongoose setup
 const PORT = process.env.PORT || 6001;
@@ -97,3 +116,38 @@ mongoose.connect(process.env.MONGO_URL,
 {
     app.listen(PORT,() => console.log(`Server running on port ${PORT}`));
 }).catch((error) => console.log(`${error}`));
+
+
+//Parse a preset POST request
+function parsePreset(req)
+{
+    const newPreset = new Preset({
+        name: req.body.name,
+        oscillator: req.body.oscillator,
+        volume: req.body.volume,
+        attack: req.body.attack,
+        decay: req.body.decay,
+        sustain: req.body.sustain,
+        release: req.body.release,
+        reverb: {
+          on: req.body.reverb.on,
+          wet: req.body.reverb.wet,
+          decay: req.body.reverb.decay,
+          preDelay: req.body.reverb.preDelay,
+        },
+        chorus: {
+          on: req.body.chorus.on,
+          wet: req.body.chorus.wet,
+          frequency: req.body.chorus.frequency,
+          depth: req.body.chorus.depth,
+        },
+        delay: {
+          on: req.body.delay.on,
+          wet: req.body.delay.wet,
+          delayTime: req.body.delay.delayTime,
+          feedback: req.body.delay.feedback,
+        },
+      });
+    return newPreset;
+}
+
