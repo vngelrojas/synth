@@ -47,7 +47,7 @@ export default function App(props)
         setIsLoggedIn(data.isLoggedIn);
         try
         {
-          //console.log(presets[12],data.presetsData[12]);
+          //Map the names of the presets to all info of preset 
           setPresetDict(createDictionary(data.presets,data.presetsData));
         }
         catch(err)
@@ -60,7 +60,6 @@ export default function App(props)
       });
   },[]);
 
-  console.log(presetDict);
   function savePreset()
   { 
     //Assign presetName to this var because schema has "name": and not "presetName": 
@@ -96,8 +95,10 @@ export default function App(props)
 
   }
 
-  const loadPreset = (presetName) => {
+  const loadPreset = (presetName) => 
+  {
     console.log(`Play button clicked for preset: ${presetName}`);
+    synth.load(presetDict[presetName]);
     // Add your logic for handling the play button click event in the Sidebar component
   };
 

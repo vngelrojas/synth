@@ -6,9 +6,8 @@ import { InputText } from 'primereact/inputtext';
 export default function Presets(props)
 {
     const presets = props.presetArray;
-    console.log(presets)
-    const handlePlayButtonClick = (presetName) => {
-        props.loadPreset(presetName);
+    const loadPreset = (presetName) => {
+        props.onPlayButtonClick(presetName);
       };
 
     return(
@@ -22,7 +21,7 @@ export default function Presets(props)
                     presets.map((presetName) =>(
                         <li>
                         {presetName}
-                        <Button onClick={() => handlePlayButtonClick(presetName)}>Play</Button>
+                        <Button onClick={() => loadPreset(presetName)}>Play</Button>
                         <Button>Delete</Button>
                         </li>
                     ))

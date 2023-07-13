@@ -26,7 +26,7 @@ export default function Effect(props)
     // Initialize the state object with default values for each knob
     const initialState = knobNames.reduce((acc, knobName) => 
     {
-        return { ...acc, [knobName]: 0 };
+        return { ...acc, [knobName]: synth[effectName + "Settings"][knobName] };
     }, {});
 
     const [knobValues, setKnobValues] = useState(initialState);
@@ -75,7 +75,7 @@ export default function Effect(props)
             knobNames.map((knobName) => (
             <Knob
                 key={knobName}
-                value={knobValues[knobName]}
+                value={synth[effectName + "Settings"][knobName]}
                 onChange={(e) => handleKnobChange(knobName, e.value)}
                 pt={{
                 value: { style: { stroke: 'var(--cyan-500)' } }
@@ -83,6 +83,7 @@ export default function Effect(props)
                 min={knobRange[knobName][0]}
                 max={knobRange[knobName][1]}
                 step={knobRange[knobName][2]}
+                defaultValue={synth[effectName + "Settings"][knobName]}
             />
             ))
         }

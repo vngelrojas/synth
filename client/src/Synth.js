@@ -146,6 +146,73 @@ class Synth
         }
         return JSON.stringify(effectData,null,2);
     }
+    load(preset)
+    {
+        // Load ADSR, volume, and oscillator
+        this.loadADSR('attack',preset.attack);
+        this.loadADSR('decay',preset.decay);
+        this.loadADSR('sustain',preset.sustain);
+        this.loadADSR('release',preset.release);
+        this.instrument.set({ volume: preset.volume });
+        this.instrumentSettings.oscillator.volume = preset.volume;
+        this.instrument.set({ oscillator: { type: preset.oscillator } });
+        this.instrumentSettings.oscillator.type = preset.oscillator;
+
+        // Load reverb
+        this.reverb.set({decay:preset.reverb.decay});
+        this.reverbSettings.decay = preset.reverb.decay;
+        this.reverb.set({preDelay:preset.reverb.preDelay});
+        this.reverbSettings.preDelay = preset.reverb.preDelay;
+        this.reverb.set({wet:preset.reverb.wet});
+        this.reverbSettings.wet = preset.reverb.wet;
+        if(preset.reverb.on)
+        {
+            this.connectReverb();
+        }
+        else
+        {
+            this.disconnectReverb();
+        }
+        
+        // Load Chorus
+        this.chorus.set({frequency:preset.chorus.frequency});
+        this.chorusSettings.frequency = preset.chorus.frequency;
+        this.chorus.set({depth:preset.chorus.depth});
+        this.chorusSettings.depth = preset.chorus.depth;
+        this.chorus.set({wet:preset.chorus.wet});
+        this.chorusSettings.wet = preset.chorus.wet;
+        if(preset.chorus.on)
+        {
+            this.connectChorus();
+        }
+        else
+        {
+            this.disconnectChorus();
+        }
+
+        // Load delay 
+        this.delay.set({delayTime:preset.delay.delayTime});
+        this.delaySettings.delayTime = preset.delay.delayTime;
+        this.delay.set({feedback:preset.delay.feedback});
+        this.delaySettings.feedback = preset.delay.feedback;
+        this.delay.set({wet:preset.delay.wet});
+        this.delaySettings.wet = preset.delay.wet;
+        if(preset.delay.on)
+        {
+            this.connectDelay();
+        }
+        else
+        {
+            this.disconnectDelay();
+        }
+
+    }
+    loadADSR(name,value)
+    {
+        this.instrument.set({ envelope: { [name]: value } });
+        this.instrumentSettings.envelope[name] = value;
+    }
+ 
 };
 
 export default Synth;
