@@ -8,7 +8,8 @@ import TextModal from "./components/TextModal";
 import Popup from 'reactjs-popup';
 import { InputText } from 'primereact/inputtext';
 import 'reactjs-popup/dist/index.css';
-
+import Presets from "./components/Presets";
+import { Sidebar } from 'primereact/sidebar';
 
 
 export default function App(props) 
@@ -16,21 +17,50 @@ export default function App(props)
   const synth = props.synth;
   const [presetName,setPresetName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [presets,setPresets] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [presetDict,setPresetDict] = useState({});
 
-  useEffect(() => {
+  function createDictionary(keys,values)
+  {
+    if(keys.length != values.length)
+      throw new Error('Key and value arrays have different size')
+    else
+    {
+      const dict = {};
+      for (let i = 0; i < keys.length; i++) 
+      {
+        dict[keys[i]] = values[i];
+      }
+      return dict;
+    }
+  }
+
+  useEffect(() => 
+  {
     
     // Make a GET request to the server to check if the user is logged in
     fetch('http://localhost:3001/check-auth', {credentials: 'include'})
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        setPresets(data.presets);
         setIsLoggedIn(data.isLoggedIn);
+        try
+        {
+          //console.log(presets[12],data.presetsData[12]);
+          setPresetDict(createDictionary(data.presets,data.presetsData));
+        }
+        catch(err)
+        {
+          console.log(err);
+        }
       })
       .catch(error => {
         console.error('Error checking authentication:', error);
       });
   },[]);
 
+  console.log(presetDict);
   function savePreset()
   { 
     //Assign presetName to this var because schema has "name": and not "presetName": 
@@ -66,9 +96,22 @@ export default function App(props)
 
   }
 
+  const loadPreset = (presetName) => {
+    console.log(`Play button clicked for preset: ${presetName}`);
+    // Add your logic for handling the play button click event in the Sidebar component
+  };
+
   return(
     <div className="main">
     {!isLoggedIn && <Button>Log In</Button>}
+    {isLoggedIn &&  
+        <div className="card flex justify-content-center">
+        <Sidebar visible={visible} position="right" onHide={() => setVisible(false)}>
+          <Presets presetArray={presets} onPlayButtonClick={loadPreset}></Presets>
+        </Sidebar>
+        <Button label='Presets' onClick={() => setVisible(true)} />
+      </div>
+      }
     <br></br>
     <SynthOptions className="synth-options" synth={props.synth} />
     <br></br>
@@ -83,11 +126,14 @@ export default function App(props)
     </div>
     {isLoggedIn && 
     (
+  
       <div>
-        <Popup trigger={<Button label="save" />} modal>
+        <Popup trigger={<Button label="save"></Button> } modal>
+
           {(close) =>
           (
             <>
+              
               <InputText maxLength={20} placeholder="Preset Name" onChange={(e) => setPresetName(e.target.value)} />
               <Button onClick={() => {savePreset();close();}}>Save</Button>
             </>

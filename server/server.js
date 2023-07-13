@@ -65,11 +65,16 @@ app.get('/protected',isLoggedIn,(req,res) =>
     res.send(`Hello`);
 });
 
-app.get('/check-auth',(req,res) =>
+app.get('/check-auth', async(req,res) =>
 {
-    console.log(req.user);
+    //console.log(req.user);
     if(req.user)
-        res.json({isLoggedIn: true,googleId: req.user.googleId})
+    {   
+        const user = await User.findOne({googleId:req.user.googleId}).exec();
+        const presetNames = user.presets.map((preset) => preset.name);
+        const allPresetsInfo = user.presets;
+        res.json({isLoggedIn: true,googleId: req.user.googleId, presets: presetNames, presetsData:allPresetsInfo})
+    }
     else
         res.json({isLoggedIn: false})
 });
@@ -84,9 +89,9 @@ app.get('/logout',(req,res) =>
 
 app.post('/save', isLoggedIn,async (req,res) => 
 {
+
     if(req.user && req.body)
     {
-        console.log(req.body.name);
         try
         {
             const preset = parsePreset(req);
@@ -94,6 +99,7 @@ app.post('/save', isLoggedIn,async (req,res) =>
             user.presets.push(preset);
             await preset.save();
             await user.save();
+            
             res.status(200).send("Nice");
         }
         catch(error)
@@ -125,12 +131,12 @@ function parsePreset(req)
 {
     const newPreset = new Preset({
         name: req.body.name,
-        oscillator: req.body.oscillator,
-        volume: req.body.volume,
-        attack: req.body.attack,
-        decay: req.body.decay,
-        sustain: req.body.sustain,
-        release: req.body.release,
+        oscillator: req.body.synth.oscillator.type,
+        volume: req.body.synth.oscillator.volume,
+        attack: req.body.synth.envelope.attack,
+        decay: req.body.synth.envelope.decay,
+        sustain: req.body.synth.envelope.sustain,
+        release: req.body.synth.envelope.release,
         reverb: {
           on: req.body.reverb.on,
           wet: req.body.reverb.wet,

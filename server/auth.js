@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const passport = require('passport');
 const User = require('./models/User'); 
+const Preset = require('./models/Preset');
 
 
 dotenv.config();
@@ -53,5 +54,4 @@ passport.deserializeUser((user,done)=>
 {
     done(null,user);
 });
-
 
