@@ -70,7 +70,10 @@ app.get('/check-auth', async(req,res) =>
     //console.log(req.user);
     if(req.user)
     {   
+        // get the user store it in 'user
         const user = await User.findOne({googleId:req.user.googleId}).exec();
+        // get array of of preset ids and store it in 'presetIds'
+        //const presetIds = user.presets;
         const presetNames = user.presets.map((preset) => preset.name);
         const allPresetsInfo = user.presets;
         res.json({isLoggedIn: true,googleId: req.user.googleId, presets: presetNames, presetsData:allPresetsInfo})
@@ -94,12 +97,12 @@ app.post('/save', isLoggedIn,async (req,res) =>
     {
         try
         {
-            const preset = parsePreset(req);
             const user = await User.findOne({googleId:req.user.googleId}).exec();
-            user.presets.push(preset);
+            const preset = parsePreset(req,user._id);
+            console.log(preset);
             await preset.save();
+            user.presets.push(preset._id);
             await user.save();
-            
             res.status(200).send("Nice");
         }
         catch(error)
@@ -110,7 +113,24 @@ app.post('/save', isLoggedIn,async (req,res) =>
     else   
         res.status(500).send("Couldnt insert");
 });
-           
+     
+
+app.delete('/deletePreset',isLoggedIn,async(req,res) =>
+{
+    if(req.body)
+    {
+        const fileToDelete = req.body.toDelete;
+        const result = await Preset.deleteOne({name:fileToDelete});
+        if(result)
+        {
+            console.log(`Successfully deleted ${fileToDelete}`);
+        }
+        else
+        {
+            console.log('No file was deleted');
+        }
+    }
+});
 
 
 // Mongoose setup
@@ -127,7 +147,7 @@ mongoose.connect(process.env.MONGO_URL,
 
 
 //Parse a preset POST request
-function parsePreset(req)
+function parsePreset(req,id)
 {
     const newPreset = new Preset({
         name: req.body.name,
@@ -155,6 +175,7 @@ function parsePreset(req)
           delayTime: req.body.delay.delayTime,
           feedback: req.body.delay.feedback,
         },
+        author: id,
       });
     return newPreset;
 }

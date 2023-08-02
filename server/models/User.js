@@ -13,7 +13,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    presets: [Preset.schema],
+    presets: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Preset',
+    }],
     createdAt:
     {
         type: Date,

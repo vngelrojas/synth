@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const PresetSchema = new mongoose.Schema({
     name: String,
     oscillator: String,
@@ -28,6 +29,11 @@ const PresetSchema = new mongoose.Schema({
         wet: Number,
         delayTime: Number,
         feedback: Number,
+    },
+    author:
+    {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
