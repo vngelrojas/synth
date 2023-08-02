@@ -73,10 +73,14 @@ app.get('/check-auth', async(req,res) =>
         // get the user store it in 'user
         const user = await User.findOne({googleId:req.user.googleId}).exec();
         // get array of of preset ids and store it in 'presetIds'
-        //const presetIds = user.presets;
-        const presetNames = user.presets.map((preset) => preset.name);
-        const allPresetsInfo = user.presets;
-        res.json({isLoggedIn: true,googleId: req.user.googleId, presets: presetNames, presetsData:allPresetsInfo})
+        const presetIds = user.presets;
+        // get the actual preset documents and store them 
+        const presetDocuments = await Preset.find({_id:{$in:presetIds}});
+        // Extract the "name" field from each preset document
+        const presetNames = presetDocuments.map((preset) => preset.name);
+        
+        // send a json saying that the user is logged in, along with their google id, and array of preset names and array of actual preset documents
+        res.json({isLoggedIn: true,googleId: req.user.googleId, presets: presetNames, presetsData:presetDocuments})
     }
     else
         res.json({isLoggedIn: false})
@@ -97,11 +101,15 @@ app.post('/save', isLoggedIn,async (req,res) =>
     {
         try
         {
+            // find store user
             const user = await User.findOne({googleId:req.user.googleId}).exec();
+            // Create a preset object 
             const preset = parsePreset(req,user._id);
-            console.log(preset);
+            // Save the preset into collection
             await preset.save();
+            // Add the id of the preset object to the user's array of presets
             user.presets.push(preset._id);
+            // Update the user
             await user.save();
             res.status(200).send("Nice");
         }
