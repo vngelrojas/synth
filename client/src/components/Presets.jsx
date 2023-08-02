@@ -2,6 +2,10 @@ import { Button } from 'primereact/button';
 import "./presetStyle.css";
 import { InputText } from 'primereact/inputtext';
 
+function deletePreset()
+{
+
+}
 
 export default function Presets(props)
 {
@@ -19,10 +23,10 @@ export default function Presets(props)
             <ul>
                 {
                     presets.map((presetName) =>(
-                        <li>
+                        <li key={presetName}>
                         {presetName}
                         <Button onClick={() => loadPreset(presetName)}>Play</Button>
-                        <Button>Delete</Button>
+                        <Button onClick={() => deletePreset(presetName)}>Delete</Button>
                         </li>
                     ))
                 }   
