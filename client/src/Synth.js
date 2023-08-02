@@ -119,6 +119,7 @@ class Synth
     }
     disconnectChorus()
     {
+        this.connectChorus();
         this.chorus.disconnect(Tone.getDestination());
         this.instrument.disconnect(this.chorus);
         this.chorusSettings.on = false;

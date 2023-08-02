@@ -98,6 +98,7 @@ export default function App(props)
   const loadPreset = (presetName) => 
   {
     console.log(`Play button clicked for preset: ${presetName}`);
+    console.log(presetDict[presetName]);
     synth.load(presetDict[presetName]);
     // Add your logic for handling the play button click event in the Sidebar component
   };
