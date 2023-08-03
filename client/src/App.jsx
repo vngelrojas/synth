@@ -102,6 +102,10 @@ export default function App(props)
     synth.load(presetDict[presetName]);
     // Add your logic for handling the play button click event in the Sidebar component
   };
+  const deletePreset = (presetName) => 
+  {
+    setPresets((prevPresets) => prevPresets.filter((preset) => preset !== presetName));
+  };
 
   return(
     <div className="main">
@@ -109,11 +113,11 @@ export default function App(props)
     {isLoggedIn &&  
         <div className="card flex justify-content-center">
         <Sidebar visible={visible} position="right" onHide={() => setVisible(false)}>
-          <Presets presetArray={presets} onPlayButtonClick={loadPreset}></Presets>
+          <Presets presetArray={presets} onPlayButtonClick={loadPreset} delete={deletePreset}></Presets>
         </Sidebar>
         <Button label='Presets' onClick={() => setVisible(true)} />
       </div>
-      }
+    }
     <br></br>
     <SynthOptions className="synth-options" synth={props.synth} />
     <br></br>
