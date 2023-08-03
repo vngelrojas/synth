@@ -114,6 +114,7 @@ export default function App(props)
         <div className="card flex justify-content-center">
         <Sidebar visible={visible} position="right" onHide={() => setVisible(false)}>
           <Presets presetArray={presets} onPlayButtonClick={loadPreset} delete={deletePreset}></Presets>
+        
         </Sidebar>
         <Button label='Presets' onClick={() => setVisible(true)} />
       </div>
