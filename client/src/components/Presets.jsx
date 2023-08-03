@@ -2,9 +2,27 @@ import { Button } from 'primereact/button';
 import "./presetStyle.css";
 import { InputText } from 'primereact/inputtext';
 
-function deletePreset()
+function deletePreset(presetName)
 {
+    try
+    {
+        const requestOptions = 
+        {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: 
+            {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ toDelete: presetName }),
+        };
 
+        fetch('http://localhost:3001/delete-preset',requestOptions);
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
 }
 
 export default function Presets(props)

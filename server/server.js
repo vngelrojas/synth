@@ -101,7 +101,7 @@ app.post('/save', isLoggedIn,async (req,res) =>
     {
         try
         {
-            // find store user
+            // find user
             const user = await User.findOne({googleId:req.user.googleId}).exec();
             // Create a preset object 
             const preset = parsePreset(req,user._id);
@@ -123,21 +123,31 @@ app.post('/save', isLoggedIn,async (req,res) =>
 });
      
 
-app.delete('/deletePreset',isLoggedIn,async(req,res) =>
+app.delete('/delete-preset',isLoggedIn,async(req,res) =>
 {
     if(req.body)
     {
-        const fileToDelete = req.body.toDelete;
-        const result = await Preset.deleteOne({name:fileToDelete});
+        // Get the name of the preset to delete
+        const presetName = req.body.toDelete;
+        const preset = await Preset.findOne({name:presetName});
+        const presetID = preset._id;
+        const result = await Preset.deleteOne({name:presetName});
         if(result)
         {
-            console.log(`Successfully deleted ${fileToDelete}`);
+            const user = await User.findOne({googleId:req.user.googleId}).exec();
+            user.presets.pull(presetID);
+            await user.save();
+            console.log(`Successfully deleted ${presetName}`);
+            res.status(200).send("Preset Deleted");
         }
         else
         {
+            res.status(500).send("No preset found");
             console.log('No file was deleted');
         }
     }
+    else
+        res.status(500).send("No body")
 });
 
 
