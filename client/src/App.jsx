@@ -140,7 +140,6 @@ export default function App(props)
           {(close) =>
           (
             <>
-              
               <InputText maxLength={20} placeholder="Preset Name" onChange={(e) => setPresetName(e.target.value)} />
               <Button onClick={() => {savePreset();close();}}>Save</Button>
             </>

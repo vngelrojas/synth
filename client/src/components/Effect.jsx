@@ -32,7 +32,8 @@ export default function Effect(props)
     const [knobValues, setKnobValues] = useState(initialState);
     // State for the on/off button
     const [state,setState] = useState(false);
-
+    
+    
     const handleKnobChange = (knobName, newValue) => 
     {
         // Copy all other values and only update the one we want to change
@@ -70,21 +71,30 @@ export default function Effect(props)
 
     return (
     <div className="effect">
+        <label  style={{ textAlign: 'center', margin: '10px' }}>{effectName}</label>
         <Button label="ON" onClick={() => toggle(!state)} />
         {
-            knobNames.map((knobName) => (
-            <Knob
-                key={knobName}
-                value={synth[effectName + "Settings"][knobName]}
-                onChange={(e) => handleKnobChange(knobName, e.value)}
-                pt={{
-                value: { style: { stroke: 'var(--cyan-500)' } }
-                }}
-                min={knobRange[knobName][0]}
-                max={knobRange[knobName][1]}
-                step={knobRange[knobName][2]}
-                defaultValue={synth[effectName + "Settings"][knobName]}
-            />
+            knobNames.map((knobName) => 
+            (
+                <div key={effectName + knobName} style={{ textAlign: 'center', margin: '10px' }}>
+                    
+                    <Knob
+                        showValue={false}
+                        key={knobName}
+                        value={synth[effectName + "Settings"][knobName]}
+                        onChange={(e) => handleKnobChange(knobName, e.value)}
+                        //pt={{ value: { style: { stroke: 'var(--cyan-500)' } } }}
+                        min={knobRange[knobName][0]}
+                        max={knobRange[knobName][1]}
+                        step={knobRange[knobName][2]}
+                        defaultValue={synth[effectName + "Settings"][knobName]}
+                        strokeWidth={10}
+                        disabled={state}
+                        rangeColor="White"
+                        valueColor="Black"
+                    />
+                    <label key={effectName + knobName}>{knobName}</label>
+                </div>
             ))
         }
     </div>

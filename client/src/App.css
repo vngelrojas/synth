@@ -1,6 +1,6 @@
 .main
 {
-    background-color:rgb(83, 83, 84)   
+    background-color:rgb(56, 53, 53)   
     
 }
 .main .effect-rack
@@ -9,6 +9,7 @@
     justify-content:flex-start;
     align-items: center;
 }
+
 
 .main .effect-rack .effect
 {
