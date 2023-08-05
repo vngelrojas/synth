@@ -1,0 +1,6 @@
+- ~~Implement delete preset function~~
+- ~~Implement "Are you sure you want to delete" message~~
+- ~~Insert labels above effects~~
+- Edit amount of floating numbers 
+- Implement overwriting currently loaded preset
+- 
