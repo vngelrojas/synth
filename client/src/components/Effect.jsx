@@ -83,7 +83,6 @@ export default function Effect(props)
                         key={knobName}
                         value={synth[effectName + "Settings"][knobName]}
                         onChange={(e) => handleKnobChange(knobName, e.value)}
-                        //pt={{ value: { style: { stroke: 'var(--cyan-500)' } } }}
                         min={knobRange[knobName][0]}
                         max={knobRange[knobName][1]}
                         step={knobRange[knobName][2]}

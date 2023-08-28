@@ -151,6 +151,44 @@ app.delete('/delete-preset',isLoggedIn,async(req,res) =>
 });
 
 
+app.put('/update-preset',isLoggedIn,async(req,res) =>
+{
+    if(req.body)
+    {
+        // Get the name of the preset to delete
+        const presetName = req.body.toDelete;
+        const preset = await Preset.findOne({name:presetName});
+        const presetID = preset._id;
+        // delete the preset document
+        const result = await Preset.deleteOne({name:presetName});
+        if(result)
+        {
+            // find the user 
+            const user = await User.findOne({googleId:req.user.googleId}).exec();
+            // Get rid of the reference to preset that was deleted
+            user.presets.pull(presetID);
+            await user.save();
+            // Create a preset object with the updated info  
+            const preset = parsePreset(req,user._id);
+            // Save the preset into collection
+            await preset.save();
+            // Add the id of the preset object to the user's array of presets
+            user.presets.push(preset._id);
+            // Update the user
+            await user.save();
+            console.log(`Successfully updated ${presetName}`);
+            res.status(200).send("Preset Deleted");
+        }
+        else
+        {
+            res.status(500).send("No preset found");
+            console.log('No file was deleted');
+        }
+    }
+    else
+        res.status(500).send("No body")
+});
+
 // Mongoose setup
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL,

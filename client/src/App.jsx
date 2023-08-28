@@ -97,6 +97,7 @@ export default function App(props)
 
   }
 
+  // Loads a preset to the synth engine
   const loadPreset = (presetName) => 
   {
     console.log(`Play button clicked for preset: ${presetName}`);
@@ -104,6 +105,7 @@ export default function App(props)
     synth.load(presetDict[presetName]);
     
   };
+  // This will remove a preset name from the array of names that is displayed on the sidebar preset menu 
   const deletePreset = (presetName) => 
   {
     setPresets((prevPresets) => prevPresets.filter((preset) => preset !== presetName));
@@ -111,12 +113,16 @@ export default function App(props)
 
   return(
     <div className="main">
-    {!isLoggedIn && <Button>Log In</Button>}
-    {isLoggedIn &&  
-        <div className="card flex justify-content-center">
+    {
+      /*If not logged in, show the log in button*/
+      !isLoggedIn && <Button>Log In</Button>
+    }
+    {
+      /* If user is logged in show the preset btn to bring up sidebar */
+      isLoggedIn &&  
+      <div className="card flex justify-content-center">
         <Sidebar visible={visible} position="right" onHide={() => setVisible(false)}>
           <Presets presetArray={presets} onPlayButtonClick={loadPreset} delete={deletePreset}></Presets>
-        
         </Sidebar>
         <Button label='Presets' onClick={() => setVisible(true)} />
       </div>
@@ -133,22 +139,25 @@ export default function App(props)
       <Effect knobNames={["wet","frequency","depth"]} effectName="chorus" synth={synth} />
       <Effect knobNames={["wet","delayTime","feedback"]} effectName="delay" synth={synth} />
     </div>
-    {isLoggedIn && 
-    (
-  
-      <div>
-        <Popup trigger={<Button label="save"></Button> } modal>
+    {
+      /*If user is logged in display the save preset button*/
+      isLoggedIn && 
+      (
+    
+        <div>
+          <Popup trigger={<Button label="save"></Button> } modal>
 
-          {(close) =>
-          (
-            <>
-              <InputText maxLength={20} placeholder="Preset Name" onChange={(e) => setPresetName(e.target.value)} />
-              <Button onClick={() => {savePreset();close();}}>Save</Button>
-            </>
-          )}
-        </Popup>
-      </div>
-    )}
+            {(close) =>
+            (
+              <>
+                <InputText maxLength={20} placeholder="Preset Name" onChange={(e) => setPresetName(e.target.value)} />
+                <Button onClick={() => {savePreset();close();}}>Save</Button>
+              </>
+            )}
+          </Popup>
+        </div>
+      )
+    }
     </div>
 
   );

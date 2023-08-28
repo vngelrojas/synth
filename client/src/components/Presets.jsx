@@ -11,7 +11,6 @@ import { confirmDialog } from 'primereact/confirmdialog'; // To use confirmDialo
 export default function Presets(props)
 {
     const presets = props.presetArray;
-    //const [presets,setPresets] = useState(props.presetArray);
     const loadPreset = (presetName) => 
     {
         props.onPlayButtonClick(presetName);
@@ -56,7 +55,6 @@ export default function Presets(props)
     return(
         <>
         <h1>Presets</h1>
-        {/* <InputText placeholder='Preset Name'></InputText> */}
         <div className='main-page'>
      
             <ul>
