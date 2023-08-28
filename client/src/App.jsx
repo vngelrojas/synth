@@ -14,6 +14,7 @@ import { Sidebar } from 'primereact/sidebar';
 
 export default function App(props) 
 {
+  // The synth engine
   const synth = props.synth;
   const [presetName,setPresetName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +22,7 @@ export default function App(props)
   const [visible, setVisible] = useState(false);
   const [presetDict,setPresetDict] = useState({});
 
+  //Create and return a dictionary mapping the keys to the values
   function createDictionary(keys,values)
   {
     if(keys.length != values.length)
@@ -47,7 +49,7 @@ export default function App(props)
         setIsLoggedIn(data.isLoggedIn);
         try
         {
-          //Map the names of the presets to all info of preset 
+          //Map the names of the presets to all info of preset and set the preset Dictionary 
           setPresetDict(createDictionary(data.presets,data.presetsData));
         }
         catch(err)
@@ -100,7 +102,7 @@ export default function App(props)
     console.log(`Play button clicked for preset: ${presetName}`);
     console.log(presetDict[presetName]);
     synth.load(presetDict[presetName]);
-    // Add your logic for handling the play button click event in the Sidebar component
+    
   };
   const deletePreset = (presetName) => 
   {
